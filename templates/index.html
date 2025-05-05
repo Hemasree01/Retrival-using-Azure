@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PDF Chatbot</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: #f4f7fa;
+        margin: 0;
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+      }
+
+      .container {
+        background: white;
+        padding: 20px 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 600px;
+      }
+
+      h2 {
+        color: #333;
+        text-align: center;
+      }
+
+      .chat-box {
+        margin-top: 20px;
+        max-height: 400px;
+        overflow-y: auto;
+        border: 1px solid #ccc;
+        padding: 15px;
+        border-radius: 10px;
+        background-color: #f9f9f9;
+      }
+
+      .message {
+        margin-bottom: 15px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .user {
+        align-self: flex-end;
+        background-color: #0078d4;
+        color: white;
+        padding: 10px 14px;
+        border-radius: 15px 15px 0 15px;
+        max-width: 80%;
+      }
+
+      .bot {
+        align-self: flex-start;
+        background-color: #e1ecf7;
+        padding: 10px 14px;
+        border-radius: 15px 15px 15px 0;
+        max-width: 80%;
+      }
+
+      form {
+        display: flex;
+        gap: 10px;
+        margin-top: 15px;
+      }
+
+      input[type="text"] {
+        flex: 1;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+      }
+
+      button {
+        padding: 10px 20px;
+        background-color: #0078d4;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+      }
+
+      .file-upload {
+        margin-top: 20px;
+        text-align: center;
+      }
+
+      .file-upload input[type="file"] {
+        display: block;
+        margin: 10px auto;
+      }
+
+      .file-info {
+        font-size: 14px;
+        text-align: center;
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Chat with Your PDF</h2>
+
+      <div class="file-upload">
+        <form method="POST" enctype="multipart/form-data">
+          <input type="file" name="pdf_file" required />
+          <button type="submit">Upload PDF</button>
+        </form>
+
+        {% if uploaded_file_name %}
+        <div class="file-info">
+          <strong>Uploaded File:</strong> {{ uploaded_file_name }}
+        </div>
+        {% endif %}
+      </div>
+
+      <div class="chat-box">
+        {% for pair in chat_history %}
+        <div class="message">
+          <div class="user">{{ pair.question }}</div>
+          <div class="bot">{{ pair.answer }}</div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <form method="POST">
+        <input
+          type="text"
+          name="question"
+          placeholder="Ask your question..."
+          required
+        />
+        <button type="submit">Send</button>
+      </form>
+    </div>
+  </body>
+</html>
